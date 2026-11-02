@@ -59,6 +59,19 @@ for (const product of products) {
     assert.deepEqual(files.filter((f) => !listed.has(f)), []);
   });
 
+  test(`${product}: each guide's closing link carries the Launchpad campaign for that guide`, () => {
+    // Untagged, a signup from the guide cannot be traced to it (gtsbahamas/fleet#5395).
+    for (const g of index.guides) {
+      const body = readFileSync(join(dir, `${g.slug}.md`), 'utf8');
+      const links = [...body.matchAll(/^\*\*\[[^\]]+\]\((https:\/\/[^)\s]+)\)\*\*\s*$/gm)].map((m) => m[1]);
+      assert.ok(links.length > 0, `${g.slug} ends with its call-to-action link`);
+      const u = new URL(links.at(-1));
+      assert.equal(u.searchParams.get('utm_source'), 'launchpad', `${g.slug} utm_source`);
+      assert.equal(u.searchParams.get('utm_medium'), 'guide', `${g.slug} utm_medium`);
+      assert.equal(u.searchParams.get('utm_campaign'), `${product}-${g.slug}`, `${g.slug} utm_campaign`);
+    }
+  });
+
   test(`${product}: guides carry no email addresses (marketing copy only)`, () => {
     for (const f of readdirSync(dir).filter((x) => x.endsWith('.md'))) {
       assert.doesNotMatch(readFileSync(join(dir, f), 'utf8'), /[\w.%+-]+@[\w-]+(\.[\w-]+)+/, f);
