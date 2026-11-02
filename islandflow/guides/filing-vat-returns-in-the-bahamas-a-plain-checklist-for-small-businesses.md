@@ -104,4 +104,4 @@ Whatever tools you use, the checklist stays the same: know your setup, gather yo
 
 ---
 
-**[Start your free trial](https://islandflow.ai/start)**
+**[Start your free trial](https://islandflow.ai/start?utm_source=launchpad&utm_medium=guide&utm_campaign=islandflow-filing-vat-returns-in-the-bahamas-a-plain-checklist-for-small-businesses)**
